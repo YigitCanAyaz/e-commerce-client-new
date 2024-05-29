@@ -11,9 +11,9 @@ export class AppComponent {
   constructor() {}
 }
 
-$.get('https://localhost:7208/api/products', (data) => {
-  console.log(data);
-});
+// $.get('https://localhost:7208/api/products', (data) => {
+//   console.log(data);
+// });
 
 // $(document).ready(() => {
 //   alert('asd');
