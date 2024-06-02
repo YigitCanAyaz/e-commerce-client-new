@@ -40,10 +40,11 @@
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef>Delete</th>
       <td
+        appDelete
         [id]="element.id"
+        [controller]="'products'"
         mat-cell
         *matCellDef="let element"
-        appDelete
         (callback)="getProducts()"
       >
         <!-- <img
