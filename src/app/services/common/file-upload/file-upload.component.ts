@@ -18,14 +18,12 @@ import {
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent {
   constructor(
     private httpClientService: HttpClientService,
     private alertifyService: AlertifyService,
     private customToastrService: CustomToastrService
   ) {}
-
-  ngOnInit(): void {}
 
   public files: NgxFileDropEntry[];
 
@@ -33,9 +31,7 @@ export class FileUploadComponent implements OnInit {
 
   public selectedFiles(files: NgxFileDropEntry[]) {
     this.files = files;
-
     const fileData: FormData = new FormData();
-
     for (const file of files) {
       (file.fileEntry as FileSystemFileEntry).file((_file: File) => {
         fileData.append(_file.name, _file, file.relativePath);
@@ -55,6 +51,7 @@ export class FileUploadComponent implements OnInit {
       .subscribe(
         (data) => {
           const message: string = 'Dosyalar başarıyla yüklenmiştir.';
+
           if (this.options.isAdminPage) {
             this.alertifyService.message(message, {
               dismissOthers: true,
@@ -62,7 +59,7 @@ export class FileUploadComponent implements OnInit {
               position: Position.TopRight,
             });
           } else {
-            this.customToastrService.message(message, 'Başarılı', {
+            this.customToastrService.message(message, 'Başarılı.', {
               messageType: ToastrMessageType.Success,
               position: ToastrPosition.TopRight,
             });
@@ -70,7 +67,8 @@ export class FileUploadComponent implements OnInit {
         },
         (errorResponse: HttpErrorResponse) => {
           const message: string =
-            'Dosyalar yüklenirken beklenilmeyen bir hatayla karşılaşılmıştır!';
+            'Dosyalar yüklenirken beklenmeyen bir hatayla karşılaşılmıştır.';
+
           if (this.options.isAdminPage) {
             this.alertifyService.message(message, {
               dismissOthers: true,
@@ -78,7 +76,7 @@ export class FileUploadComponent implements OnInit {
               position: Position.TopRight,
             });
           } else {
-            this.customToastrService.message(message, 'Başarısız', {
+            this.customToastrService.message(message, 'Başarsız.', {
               messageType: ToastrMessageType.Error,
               position: ToastrPosition.TopRight,
             });
