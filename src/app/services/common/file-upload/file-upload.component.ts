@@ -18,6 +18,8 @@ import {
   FileUploadDialogState,
 } from 'src/app/dialogs/file-upload-dialog/file-upload-dialog.component';
 import { DialogService } from '../dialog.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SpinnerType } from 'src/app/base/base.component';
 
 @Component({
   selector: 'app-file-upload',
@@ -30,7 +32,8 @@ export class FileUploadComponent {
     private alertifyService: AlertifyService,
     private customToastrService: CustomToastrService,
     private dialog: MatDialog,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private spinner: NgxSpinnerService
   ) {}
 
   public files: NgxFileDropEntry[];
@@ -50,6 +53,7 @@ export class FileUploadComponent {
       componentType: FileUploadDialogComponent,
       data: FileUploadDialogState,
       afterClosed: () => {
+        this.spinner.show(SpinnerType.BallAtom);
         {
           this.httpClientService
             .post(
@@ -65,6 +69,7 @@ export class FileUploadComponent {
               (data) => {
                 const message: string = 'Dosyalar başarıyla yüklenmiştir.';
 
+                this.spinner.hide(SpinnerType.BallAtom);
                 if (this.options.isAdminPage) {
                   this.alertifyService.message(message, {
                     dismissOthers: true,
@@ -82,6 +87,7 @@ export class FileUploadComponent {
                 const message: string =
                   'Dosyalar yüklenirken beklenmeyen bir hatayla karşılaşılmıştır.';
 
+                this.spinner.hide(SpinnerType.BallAtom);
                 if (this.options.isAdminPage) {
                   this.alertifyService.message(message, {
                     dismissOthers: true,
