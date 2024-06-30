@@ -41,6 +41,7 @@ export class FileUploadComponent {
   @Input() options: Partial<FileUploadOptions>;
 
   public selectedFiles(files: NgxFileDropEntry[]) {
+    console.log(files);
     this.files = files;
     const fileData: FormData = new FormData();
     for (const file of files) {
