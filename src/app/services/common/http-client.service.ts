@@ -24,13 +24,16 @@ export class HttpClientService {
     id?: string
   ): Observable<T> {
     let url: string = '';
-    if (requestParameter.fullEndpoint) url = requestParameter.fullEndpoint;
+    if (requestParameter.fullEndPoint) url = requestParameter.fullEndPoint;
     else
-      url = `${this.url(requestParameter)}${id ? '/${id}' : ''}${
+      url = `${this.url(requestParameter)}${id ? `/${id}` : ''}${
         requestParameter.queryString ? `?${requestParameter.queryString}` : ''
       }`;
 
-    return this.httpClient.get<T>(url, { headers: requestParameter.headers });
+    return this.httpClient.get<T>(url, {
+      headers: requestParameter.headers,
+      responseType: requestParameter.responseType as 'json',
+    });
   }
 
   post<T>(
@@ -38,13 +41,15 @@ export class HttpClientService {
     body: Partial<T>
   ): Observable<T> {
     let url: string = '';
-    if (requestParameter.fullEndpoint) url = requestParameter.fullEndpoint;
+    if (requestParameter.fullEndPoint) url = requestParameter.fullEndPoint;
     else
       url = `${this.url(requestParameter)}${
         requestParameter.queryString ? `?${requestParameter.queryString}` : ''
       }`;
+
     return this.httpClient.post<T>(url, body, {
       headers: requestParameter.headers,
+      responseType: requestParameter.responseType as 'json',
     });
   }
 
@@ -53,13 +58,15 @@ export class HttpClientService {
     body: Partial<T>
   ): Observable<T> {
     let url: string = '';
-    if (requestParameter.fullEndpoint) url = requestParameter.fullEndpoint;
+    if (requestParameter.fullEndPoint) url = requestParameter.fullEndPoint;
     else
       url = `${this.url(requestParameter)}${
         requestParameter.queryString ? `?${requestParameter.queryString}` : ''
       }`;
+
     return this.httpClient.put<T>(url, body, {
       headers: requestParameter.headers,
+      responseType: requestParameter.responseType as 'json',
     });
   }
 
@@ -68,10 +75,15 @@ export class HttpClientService {
     id: string
   ): Observable<T> {
     let url: string = '';
-    if (requestParameter.fullEndpoint) url = requestParameter.fullEndpoint;
-    else url = `${this.url(requestParameter)}/${id}`;
+    if (requestParameter.fullEndPoint) url = requestParameter.fullEndPoint;
+    else
+      url = `${this.url(requestParameter)}/${id}${
+        requestParameter.queryString ? `?${requestParameter.queryString}` : ''
+      }`;
+
     return this.httpClient.delete<T>(url, {
       headers: requestParameter.headers,
+      responseType: requestParameter.responseType as 'json',
     });
   }
 }
@@ -80,7 +92,10 @@ export class RequestParameters {
   controller?: string;
   action?: string;
   queryString?: string;
+
   headers?: HttpHeaders;
   baseUrl?: string;
-  fullEndpoint?: string;
+  fullEndPoint?: string;
+
+  responseType?: string = 'json';
 }
